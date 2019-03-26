@@ -106,6 +106,7 @@ app.removeAllListeners("closed");
 * window-initialized (see {@tutorial Window.addEventListener})
 * window-maximized (see {@tutorial Window.addEventListener})
 * window-minimized (see {@tutorial Window.addEventListener})
+* window-options-changed (see {@tutorial Window.addEventListener})
 * window-navigation-rejected
 * window-not-responding
 * window-preload-scripts-state-changed (see {@tutorial Window.addEventListener})
