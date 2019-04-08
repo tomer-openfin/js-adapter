@@ -1,6 +1,9 @@
 export interface ProcessInfo {
-    cpuUsage?: number;
+    processId?: number;
+    uuid?: string;
     name?: string;
+    type?: string;
+    runtimeVersion?: string;
     nonPagedPoolUsage?: number;
     pageFaultCount?: number;
     pagedPoolUsage?: number;
@@ -9,7 +12,6 @@ export interface ProcessInfo {
     peakPagedPoolUsage?: number;
     peakPagefileUsage?: number;
     peakWorkingSetSize?: number;
-    processId?: number;
-    uuid?: string;
+    cpuUsage?: number;
     workingSetSize?: number;
 }

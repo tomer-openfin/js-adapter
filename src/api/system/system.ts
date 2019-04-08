@@ -771,8 +771,8 @@ export default class System extends EmitterBase<SystemEvents> {
     }
 
     /**
-     * Retrieves an array of all of the runtime processes that are currently
-     * running. Each element in the array is an object containing the uuid
+     * Retrieves an array of all of the processes that are currently
+     * running across all runtimes. Each element in the array is an object containing the uuid
      * and the name of the application to which the process belongs.
      * @return {Promise.Array.<ProcessInfo>}
      * @tutorial System.getProcessList
