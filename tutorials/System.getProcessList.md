@@ -9,7 +9,7 @@ fin.System.getProcessList().then(ProcessList => console.log(ProcessList)).catch(
 ### Response structure
 ```js
 [
-        {
+    {
         processId: 5346, // The native os process id.
         uuid: 'someUuid', // Parent app uuid
         name: 'someAppName', // Parent app name
