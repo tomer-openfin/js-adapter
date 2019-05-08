@@ -8,6 +8,7 @@ import { WindowEvents } from '../events/window';
 import { AnchorType } from './anchor-type';
 import { WindowOption } from './windowOption';
 import { EntityType } from '../frame/frame';
+import { validateIdentity } from '../../util/validate';
 
 /**
  * @lends Window
@@ -22,6 +23,10 @@ export default class _WindowModule extends Base {
      * @static
      */
     public async wrap(identity: Identity): Promise<_Window> {
+        const errorMsg = validateIdentity(identity);
+        if (errorMsg) {
+            throw new Error(errorMsg);
+        }
         return new _Window(this.wire, identity);
     }
 
@@ -33,6 +38,10 @@ export default class _WindowModule extends Base {
      * @static
      */
     public wrapSync(identity: Identity): _Window {
+        const errorMsg = validateIdentity(identity);
+        if (errorMsg) {
+            throw new Error(errorMsg);
+        }
         return new _Window(this.wire, identity);
     }
 
@@ -506,7 +515,18 @@ export class _Window extends EmitterBase<WindowEvents> {
                 } else {
                     reject(pageResolve);
                 }
-            });
+                try {
+                    // this is to enforce a 5.0 contract that the child's main function
+                    // will not fire before the parent's success callback on creation.
+                    // if the child window is not accessible (CORS) this contract does
+                    // not hold.
+                    const webWindow: any = this.getWebWindow();
+                    webWindow.fin.__internal_.openerSuccessCBCalled();
+                } catch (e) {
+                    //common for main windows, we do not want to expose this error. here just to have a debug target.
+                    //console.error(e);
+                }
+            }).catch(reject);
         });
     }
 
@@ -764,6 +784,15 @@ export class _Window extends EmitterBase<WindowEvents> {
     }
 
     /**
+     * Gets the [Window Object](https://developer.mozilla.org/en-US/docs/Web/API/Window) previously getNativeWindow
+     * @return {object}
+     * @tutorial Window.getWebWindow
+     */
+    public getWebWindow(): Window {
+        return this.wire.environment.getWebWindow(this.identity);
+    }
+
+    /**
      * Determines if the window is a main window.
      * @return {boolean}
      * @tutorial Window.isMainWindow
@@ -971,7 +1000,8 @@ export class _Window extends EmitterBase<WindowEvents> {
     }
 
     /**
-     * Updates the window using the passed options
+     * Updates the window using the passed options.
+     * Values that are objects are deep-merged, overwriting only the values that are provided.
      * @param {*} options Changes a window's options that were defined upon creation. See tutorial
      * @return {Promise.<void>}
      * @tutorial Window.updateOptions
@@ -1011,7 +1041,7 @@ export class _Window extends EmitterBase<WindowEvents> {
     }
 
     /**
-     * Navigates the window to a specified URL.
+     * Navigates the window to a specified URL. The url must contain the protocol prefix such as http:// or https://.
      * @param {string} url - The URL to navigate the window to.
      * @return {Promise.<void>}
      * @tutorial Window.navigate

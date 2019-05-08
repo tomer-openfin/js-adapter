@@ -7,6 +7,7 @@ import Transport from '../../transport/transport';
 import Bounds from '../window/bounds';
 import { ApplicationEvents } from '../events/application';
 import { ApplicationOption } from './applicationOption';
+import { validateIdentity } from '../../util/validate';
 
 export interface TrayIconClickReply extends Point, Reply<'application', 'tray-icon-clicked'> {
     button: number;
@@ -114,8 +115,12 @@ export default class ApplicationModule extends Base {
      * @tutorial Application.wrap
      * @static
      */
-    public wrap(identity: Identity): Promise<Application> {
-        return Promise.resolve(new Application(this.wire, identity));
+    public async wrap(identity: Identity): Promise<Application> {
+        const errorMsg = validateIdentity(identity);
+        if (errorMsg) {
+            throw new Error(errorMsg);
+        }
+        return new Application(this.wire, identity);
     }
 
     /**
@@ -126,8 +131,13 @@ export default class ApplicationModule extends Base {
      * @static
      */
     public wrapSync(identity: Identity): Application {
+        const errorMsg = validateIdentity(identity);
+        if (errorMsg) {
+            throw new Error(errorMsg);
+        }
         return new Application(this.wire, identity);
     }
+
     // tslint:disable-next-line:function-name
     private async _create(appOptions: ApplicationOption): Promise<Application> {
         //set defaults:
@@ -146,6 +156,10 @@ export default class ApplicationModule extends Base {
     * @param { ApplicationOption } appOptions
     * @return {Promise.<Application>}
     * @tutorial Application.create
+<<<<<<< HEAD
+=======
+    * @ignore
+>>>>>>> develop
     */
     public create(appOptions: ApplicationOption): Promise<Application> {
         console.warn('Deprecation Warning: fin.Application.create is deprecated. Please use fin.Application.start');
@@ -481,6 +495,10 @@ export class Application extends EmitterBase<ApplicationEvents> {
      * Needed when starting application via {@link Application.create}, but NOT needed when starting via {@link Application.start}.
      * @return {Promise.<void>}
      * @tutorial Application.run
+<<<<<<< HEAD
+=======
+     * @ignore
+>>>>>>> develop
      */
     public run(): Promise<void> {
         console.warn('Deprecation Warning: Application.run is deprecated Please use fin.Application.start');
