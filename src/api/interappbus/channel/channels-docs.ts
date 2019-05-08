@@ -51,11 +51,7 @@ InterApplicationBus.Channel.connect = function (options:any) { }
 /**
  * 
  * Listen for newly created channels.
-<<<<<<< HEAD
- * @param {Channel~ConnectionEvent} listener - callback to execute.
-=======
  * @param {InterApplicationBus.Channel~ConnectionEvent} listener - callback to execute.
->>>>>>> develop
  * @tutorial Channel.onChannelConnect
  */
 InterApplicationBus.Channel.onChannelConnect = function () { }
@@ -63,11 +59,7 @@ InterApplicationBus.Channel.onChannelConnect = function () { }
 /**
  * 
  * Listen for channel disconnections.
-<<<<<<< HEAD
- * @param {Channel~ConnectionEvent} listener - callback to execute.
-=======
  * @param {InterApplicationBus.Channel~ConnectionEvent} listener - callback to execute.
->>>>>>> develop
  * @tutorial Channel.onChannelDisconnect
  */
 InterApplicationBus.Channel.onChannelDisconnect = function () { }
