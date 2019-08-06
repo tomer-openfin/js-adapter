@@ -65,5 +65,8 @@ export class BrowserView extends WebContents<BaseEventMap> {
         const ack = await this.wire.sendAction('get-browser-view-info', {...this.identity});
         return ack.payload.data;
     }
-
+    public destroy = async () => {
+        const ack = await this.wire.sendAction('destroy-browser-view', {...this.identity});
+        return ack.payload.data;
+    }
 }
